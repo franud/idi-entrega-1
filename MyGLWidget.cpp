@@ -48,6 +48,7 @@ void MyGLWidget::paintGL ()
   glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
 
   // Pintem muntanya
+  send_color (0.5f, 0.3f, 0.1f);
   modelTransformMuntanya ();
   pintaMuntanya();
   
@@ -166,6 +167,7 @@ void MyGLWidget::carregaShaders()
   vertexLoc = glGetAttribLocation (program->programId(), "vertex");
   // Obtenim els identificadors dels uniforms
   transLoc = glGetUniformLocation (program->programId(), "TG");
+  colorLoc = glGetUniformLocation (program->programId(), "color");
   //...
 }
 
@@ -177,3 +179,6 @@ void MyGLWidget::modelTransformMuntanya () {
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGmountain[0][0]);
 }
 
+void MyGLWidget::send_color (float r, float g, float b) {
+  glUniform3f (colorLoc, r, g, b);
+}

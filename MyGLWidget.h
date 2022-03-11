@@ -45,13 +45,14 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformSeient(glm::vec3 posBase);
     void modelTransformNeu();
     void transformGirGronxador();
+    void send_color (float R, float G, float B);
 
     // program
     QOpenGLShaderProgram *program;
     // attribute locations
     GLuint vertexLoc;
     // uniform locations
-    GLuint transLoc;
+    GLuint transLoc, colorLoc;
     // ...
 
     // VAOs
