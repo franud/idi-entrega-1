@@ -48,6 +48,7 @@ void MyGLWidget::paintGL ()
   glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
 
   // Pintem muntanya
+  modelTransformMuntanya ();
   pintaMuntanya();
   
   // Pintem gronxador
@@ -84,7 +85,10 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
 void MyGLWidget::transformGirGronxador ()
 {
   GirGronxador = glm::mat4(1.0);
+  
+  glUniformMatrix4fv (transLoc, 1, GL_FALSE, &GirGronxador[0][0]);
 
+  
   // Codi per a la TG necessària
   // .....  
 }
@@ -160,11 +164,16 @@ void MyGLWidget::carregaShaders()
 
   // Obtenim identificador per a l'atribut “vertex” del vertex shader
   vertexLoc = glGetAttribLocation (program->programId(), "vertex");
-
   // Obtenim els identificadors dels uniforms
+  transLoc = glGetUniformLocation (program->programId(), "TG");
   //...
 }
 
 void MyGLWidget::modelTransformMuntanya () {
-  
+  TGmountain = glm::mat4(1.0f);
+  TGmountain = glm::translate(TGmountain, glm::vec3 (-1.0f, -1.0f, 0.0f));
+  TGmountain = glm::scale (TGmountain, glm::vec3 (1.6f, 1.8f, 1.0f)); 
+
+  glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGmountain[0][0]);
 }
+

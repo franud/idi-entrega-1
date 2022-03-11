@@ -45,12 +45,13 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformSeient(glm::vec3 posBase);
     void modelTransformNeu();
     void transformGirGronxador();
-    
+
     // program
     QOpenGLShaderProgram *program;
     // attribute locations
     GLuint vertexLoc;
     // uniform locations
+    GLuint transLoc;
     // ...
 
     // VAOs
@@ -63,5 +64,6 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     glm::vec3 colObj;
     // matriu per girar el gronxador i angle gir
     glm::mat4 GirGronxador;
+    glm::mat4 TGmountain;
     float angleGir = 0.0;
 };
