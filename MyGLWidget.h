@@ -65,6 +65,5 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     glm::vec3 colObj;
     // matriu per girar el gronxador i angle gir
     glm::mat4 GirGronxador;
-    glm::mat4 TGmountain;
     float angleGir = 0.0;
 };

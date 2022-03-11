@@ -51,6 +51,10 @@ void MyGLWidget::paintGL ()
   send_color (0.5f, 0.3f, 0.1f);
   modelTransformMuntanya ();
   pintaMuntanya();
+
+  send_color (0.7f, 0.0f, 0.0f);
+  modelTransformBaseGronxador ();
+  pintaBaseGronxador ();
   
   // Pintem gronxador
   transformGirGronxador();
@@ -172,6 +176,7 @@ void MyGLWidget::carregaShaders()
 }
 
 void MyGLWidget::modelTransformMuntanya () {
+  glm::mat4 TGmountain;
   TGmountain = glm::mat4(1.0f);
   TGmountain = glm::translate(TGmountain, glm::vec3 (-1.0f, -1.0f, 0.0f));
   TGmountain = glm::scale (TGmountain, glm::vec3 (1.6f, 1.8f, 1.0f)); 
@@ -181,4 +186,17 @@ void MyGLWidget::modelTransformMuntanya () {
 
 void MyGLWidget::send_color (float r, float g, float b) {
   glUniform3f (colorLoc, r, g, b);
+}
+
+void MyGLWidget::pintaBaseGronxador () {
+  pintaMuntanya ();
+}
+
+void MyGLWidget::modelTransformBaseGronxador () {
+  glm::mat4 TGBaseGronxador;
+  TGBaseGronxador = glm::mat4(1.0f);
+  TGBaseGronxador = glm::translate (TGBaseGronxador, glm::vec3 (-0.1f, -1.0f, 0.0f));
+  TGBaseGronxador = glm::scale (TGBaseGronxador, glm::vec3 (0.2f, 0.3f, 0.0f));
+
+  glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGBaseGronxador[0][0]);
 }
