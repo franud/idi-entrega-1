@@ -34,18 +34,18 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void creaBuffersTriangle();
     void carregaShaders();
 
-    void pintaMuntanya();
-    void pintaBaseGronxador();
+    void pintaMuntanya(); //Done
+    void pintaBaseGronxador(); //Done
     void pintaGronxador();
     void pintaNeu();
     
-    void modelTransformMuntanya();
-    void modelTransformBaseGronxador();
+    void modelTransformMuntanya(); //Done
+    void modelTransformBaseGronxador(); //Done
     void modelTransformBarraGronxador();
     void modelTransformSeient(glm::vec3 posBase);
     void modelTransformNeu();
-    void transformGirGronxador();
-    void send_color (float R, float G, float B);
+    void transformGirGronxador(); 
+    void send_color (float R, float G, float B); //Done
 
     // program
     QOpenGLShaderProgram *program;

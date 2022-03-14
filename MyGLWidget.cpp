@@ -35,16 +35,33 @@ void MyGLWidget::pintaMuntanya ()  // Caldrà modificar aquest mètode per pinta
 void MyGLWidget::modelTransformBarraGronxador () {
   glm::mat4 TGBarraGronxador = glm::mat4 (1.0f);
   TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.0f, -0.7f, 0.0f));
+  TGBarraGronxador = glm::rotate (TGBarraGronxador, glm::radians (angleGir), glm::vec3 (0.0f, 0.0f, 1.0f));
   TGBarraGronxador = glm::scale (TGBarraGronxador, 2.0f * glm::vec3 (1.4f, 0.2f, 0.0f));
   TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.25f, 0.5f, 0.0f));
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGBarraGronxador[0][0]);
 }
 
+
+/* Creo que esta solución no es la más elegante. Si un profesor corrige esto manualmente, los movimientos son: 
+1. Mover la base al centro de coordenadas
+2. Escalo por dos el cuadrado (porque sus lados no miden 1x1 y para facilitar los calculos)
+3. Muevo el asiento a su posición cuando la barra está con 0 grados de inclinación
+4. Lo muevo 0.7 en el eje Y que es donde estaria el asiento si la barra estuviese con el centro en (0,0)
+5. Hago en giro de angleGir grados
+6. Lo muevo -0.7 en el eje Y para ponerlo en su posición
+
+Me gustaría saber cual es la forma en la que lo quereis vosotros, este es mi correo:
+jose.francisco.udaeta@estudiantat.upc.edu
+
+Gracias
+ */
 void MyGLWidget::modelTransformSeient (glm::vec3 posBase) {
   glm::mat4 TGBarraGronxador = glm::mat4 (1.0f);
+  TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.0f, -0.7f, 0.0f));  
+  TGBarraGronxador = glm::rotate (TGBarraGronxador, glm::radians (angleGir), glm::vec3 (0.0f, 0.0f, 1.0f));
+  TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.0f, 0.7f, 0.0f));
   TGBarraGronxador = glm::translate (TGBarraGronxador, posBase);
-  TGBarraGronxador = glm::scale (TGBarraGronxador, glm::vec3 (0.2f, 0.1f, 0.0f));
-  TGBarraGronxador = glm::scale (TGBarraGronxador, glm::vec3 (2.0f));
+  TGBarraGronxador = glm::scale (TGBarraGronxador, 2.0f * glm::vec3 (0.2f, 0.1f, 0.0f));
   TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.25f, 0.5f, 0.0f));
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGBarraGronxador[0][0]);
 }
@@ -82,11 +99,15 @@ void MyGLWidget::paintGL ()
 
   modelTransformBaseGronxador ();
   send_color (0.7f, 0.0f, 0.0f);
-  pintaBaseGronxador ();
+  pintaBaseGronxador();
   
   // Pintem gronxador
-  transformGirGronxador();
+  //transformGirGronxador(); //No m'ha fet falta la funció pero potser tenia que haber posat aquí el codi del gir...
   pintaGronxador();
+
+  modelTransformNeu();
+  send_color (1.0f, 1.0f, 1.0f);
+  pintaNeu();
   
   // Desactivem el VAO
   glBindVertexArray(0);
@@ -110,6 +131,17 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
 {
   makeCurrent();
   switch (event->key()) {
+    case Qt::Key_Left:
+      if (angleGir < 25.0f) {
+        angleGir = angleGir + 5.0f;
+      }
+      break;
+    
+    case Qt::Key_Right:
+      if (angleGir > -25.0f) {
+        angleGir = angleGir - 5.0f;
+      }
+      break;
     default: event->ignore(); break;
   }
   update();
@@ -117,11 +149,7 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
 
 void MyGLWidget::transformGirGronxador ()
 {
-  GirGronxador = glm::mat4(1.0);
-  
-  glUniformMatrix4fv (transLoc, 1, GL_FALSE, &GirGronxador[0][0]);
-
-  
+  GirGronxador = glm::mat4(1.0);  
   // Codi per a la TG necessària
   // .....  
 }
@@ -201,6 +229,19 @@ void MyGLWidget::carregaShaders()
   transLoc = glGetUniformLocation (program->programId(), "TG");
   colorLoc = glGetUniformLocation (program->programId(), "color");
   //...
+}
+
+void MyGLWidget::pintaNeu () {
+  pintaMuntanya();
+}
+
+void MyGLWidget::modelTransformNeu () {
+  glm::mat4 TGNeu;
+  TGNeu = glm::mat4 (1.0f);
+  TGNeu = glm::translate (TGNeu, glm::vec3 (-0.2, 0.8f, 0.0f));
+  TGNeu = glm::scale (TGNeu, glm::vec3 (0.4f, 0.4f, 1.0f));
+  TGNeu = glm::translate (TGNeu, glm::vec3 (-0.5f, -1.0f, 0.0f));
+  glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGNeu[0][0]); 
 }
 
 void MyGLWidget::modelTransformMuntanya () {
