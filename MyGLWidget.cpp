@@ -32,11 +32,28 @@ void MyGLWidget::pintaMuntanya ()  // Caldrà modificar aquest mètode per pinta
   glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
+void MyGLWidget::modelTransformBarraGronxador () {
+  glm::mat4 TGBarraGronxador = glm::mat4 (1.0f);
+  TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.0f, -0.7f, 0.0f));
+  TGBarraGronxador = glm::scale (TGBarraGronxador, 2.0f * glm::vec3 (1.4f, 0.2f, 0.0f));
+  TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.25f, 0.5f, 0.0f));
+  glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGBarraGronxador[0][0]);
+}
+
 void MyGLWidget::pintaGronxador ()  
 { // Caldrà modificar aquest mètode per pintar el gronxador sencer, la barra i els dos seients
   // pintem un quadrat 
   glBindVertexArray(VAOQuadrat);
+  //Barra Gronxador
+  modelTransformBarraGronxador ();
+  send_color (0.2f, 0.7f, 0.2f);
   glDrawArrays(GL_TRIANGLES, 0, 6);
+  // //Seient Esquerra
+  // modelTransformSeient (glm::vec3 (-0.6f, -0.5f, 0.0f));
+  // glDrawArrays(GL_TRIANGLES, 0, 6);
+  // //Seient Dreta
+  // modelTransformSeient (glm::vec3 (0.6f, -0.5f, 0.0f));
+  // glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void MyGLWidget::paintGL ()
@@ -48,12 +65,12 @@ void MyGLWidget::paintGL ()
   glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
 
   // Pintem muntanya
-  send_color (0.5f, 0.3f, 0.1f);
   modelTransformMuntanya ();
+  send_color (0.5f, 0.3f, 0.1f);
   pintaMuntanya();
 
-  send_color (0.7f, 0.0f, 0.0f);
   modelTransformBaseGronxador ();
+  send_color (0.7f, 0.0f, 0.0f);
   pintaBaseGronxador ();
   
   // Pintem gronxador
