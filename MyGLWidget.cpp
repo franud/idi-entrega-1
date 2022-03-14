@@ -40,6 +40,15 @@ void MyGLWidget::modelTransformBarraGronxador () {
   glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGBarraGronxador[0][0]);
 }
 
+void MyGLWidget::modelTransformSeient (glm::vec3 posBase) {
+  glm::mat4 TGBarraGronxador = glm::mat4 (1.0f);
+  TGBarraGronxador = glm::translate (TGBarraGronxador, posBase);
+  TGBarraGronxador = glm::scale (TGBarraGronxador, glm::vec3 (0.2f, 0.1f, 0.0f));
+  TGBarraGronxador = glm::scale (TGBarraGronxador, glm::vec3 (2.0f));
+  TGBarraGronxador = glm::translate (TGBarraGronxador, glm::vec3 (0.25f, 0.5f, 0.0f));
+  glUniformMatrix4fv (transLoc, 1, GL_FALSE, &TGBarraGronxador[0][0]);
+}
+
 void MyGLWidget::pintaGronxador ()  
 { // Caldrà modificar aquest mètode per pintar el gronxador sencer, la barra i els dos seients
   // pintem un quadrat 
@@ -48,12 +57,14 @@ void MyGLWidget::pintaGronxador ()
   modelTransformBarraGronxador ();
   send_color (0.2f, 0.7f, 0.2f);
   glDrawArrays(GL_TRIANGLES, 0, 6);
-  // //Seient Esquerra
-  // modelTransformSeient (glm::vec3 (-0.6f, -0.5f, 0.0f));
-  // glDrawArrays(GL_TRIANGLES, 0, 6);
-  // //Seient Dreta
-  // modelTransformSeient (glm::vec3 (0.6f, -0.5f, 0.0f));
-  // glDrawArrays(GL_TRIANGLES, 0, 6);
+  //Seient Esquerra
+  send_color (0.4f, 0.4f, 0.4f);
+  modelTransformSeient (glm::vec3 (-0.6f, -0.5f, 0.0f));
+  glDrawArrays(GL_TRIANGLES, 0, 6);
+  //Seient Dreta
+  send_color (0.4f, 0.4f, 0.4f);
+  modelTransformSeient (glm::vec3 (0.6f, -0.5f, 0.0f));
+  glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void MyGLWidget::paintGL ()
